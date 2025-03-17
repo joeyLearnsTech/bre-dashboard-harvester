@@ -84,6 +84,14 @@ const XmlFileUploader: React.FC<XmlFileUploaderProps> = ({ onUpload }) => {
           setUploadProgress(100);
           onUpload(event.target.result);
         }, 500); // Small delay to show 100% progress
+      } else if (event.target && event.target.result) {
+        // Handle ArrayBuffer case by converting to string
+        const content = new TextDecoder().decode(event.target.result as ArrayBuffer);
+        setTimeout(() => {
+          setIsUploading(false);
+          setUploadProgress(100);
+          onUpload(content);
+        }, 500);
       }
     };
     
